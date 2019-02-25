@@ -1,5 +1,7 @@
 package com.board.game;
 
+import java.util.Scanner;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.board.controller.GameControll;
@@ -8,16 +10,25 @@ import com.board.controller.GameControll;
 public class GameApplication {
 
 	public static void main(String[] args) {
-		String[] handAndPit = "A;2".split(";");
-		String position = "A;2".replaceAll(";", "");
+		GameControll game = new GameControll();
+		game.startDrawBoard();
+
+		Scanner sc =  new Scanner(System.in);
 		
-		System.out.println(position);
+		System.out.println("Player 1");
+		System.out.println("Choose the pit:");
+		String position = sc.nextLine(); 
+
+		sc.close();
+		
+		String[] handAndPit = position.split(";");
+		String positionFixed = position.replaceAll(";", "");
 		
 		
-		if (!position.equals("A1") && !position.equals("B7")) {
-			GameControll game = new GameControll();
+		if (!positionFixed.equals("A1") && !positionFixed.equals("B7")) {
 			game.initializePits();
 			game.prepareToMove(handAndPit[0], handAndPit[1]);
+			System.out.println(game.drawBoardPlaying()); 
 		} else {
 			System.out.println("Posição invalida!");
 		}

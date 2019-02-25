@@ -27,26 +27,32 @@ public class GameControll {
 		pits.put("B6", 6);
 		pits.put("B7", 0);
 
-		System.out.println("--------------------");
-		System.out.println("Size: " + pits.size());
-		for (String key : pits.keySet()) {
-			Integer value = pits.get(key);
-			System.out.println("Key = " + key + ", Value = " + value);
-		}
-		System.out.println("--------------------");
+		/*
+		 * System.out.println("--------------------"); System.out.println("Size: " +
+		 * pits.size()); for (String key : pits.keySet()) { Integer value =
+		 * pits.get(key); System.out.println("Key = " + key + ", Value = " + value); }
+		 * System.out.println("--------------------");
+		 */
 
 	}
 
 	public void prepareToMove(String hand, String pit) {
-		String position = hand + pit;
 
+		String position = hand + pit;
 		if (hand.equals("A")) {
 			moveHandA(position, Integer.parseInt(pit), false);
 		} else {
 			moveHandB(position, Integer.parseInt(pit), false);
 		}
+
 	}
 
+	/**
+	 * Move the stones through the pits
+	 * @param position
+	 * @param iterator
+	 * @param isCalledByHandB
+	 */
 	public void moveHandA(String position, int iterator, boolean isCalledByHandB) {
 		int stones = 0;
 
@@ -56,7 +62,7 @@ public class GameControll {
 				position = "A" + Integer.toString(index);
 				int stonesInThisPosition = pits.get(position);
 				pits.put(position, stonesInThisPosition + 1);
-				System.out.println("Position: " + position + " " + pits.get(position));
+				// System.out.println("Position: " + position + " " + pits.get(position));
 				index--;
 			}
 		} else {
@@ -66,18 +72,19 @@ public class GameControll {
 					if (stones == 0) {
 						stones = pits.get(position);
 						pits.put(position, 0);
-						System.out.println("Position: " + position + " " + pits.get(position));
+						// System.out.println("Position: " + position + " " + pits.get(position));
 					} else {
 						int stonesInThisPosition = pits.get(position);
 						pits.put(position, stonesInThisPosition + 1);
-						System.out.println("Position: " + position + " " + pits.get(position));
+						// System.out.println("Position: " + position + " " + pits.get(position));
 					}
-					System.out.println(stones);
+					// System.out.println(stones);
 					stones--;
 				} else {
 					int stonesInThisPosition = pits.get(position);
 					pits.put(position, stonesInThisPosition + 1);
-					System.out.println("Position: " + position + " " + pits.get(position));
+					stones--;
+					// System.out.println("Position: " + position + " " + pits.get(position));
 					moveHandB("B1", stones, true);
 					return;
 				}
@@ -87,16 +94,21 @@ public class GameControll {
 
 	}
 
+	/**
+	 * Move the stones through the pits
+	 * @param position
+	 * @param iterator
+	 * @param isCalledByHandA
+	 */
 	public void moveHandB(String position, int iterator, boolean isCalledByHandA) {
 		int stones = 0;
-
 		if (isCalledByHandA) {
 			int index = 1;
 			for (int i = 0; i <= iterator; i++) {
 				position = "B" + Integer.toString(index);
 				int stonesInThisPosition = pits.get(position);
 				pits.put(position, stonesInThisPosition + 1);
-				System.out.println("Position: " + position + " " + pits.get(position));
+				// System.out.println("Position: " + position + " " + pits.get(position));
 				index++;
 			}
 		} else {
@@ -106,27 +118,61 @@ public class GameControll {
 					if (stones == 0) {
 						stones = pits.get(position);
 						pits.put(position, 0);
-						System.out.println("Position: " + position + " " + pits.get(position));
+						// System.out.println("Position: " + position + " " + pits.get(position));
 					} else {
 						int stonesInThisPosition = pits.get(position);
 						pits.put(position, stonesInThisPosition + 1);
-						System.out.println("Position: " + position + " " + pits.get(position));
+						// System.out.println("Position: " + position + " " + pits.get(position));
 					}
-					System.out.println(stones);
+					// System.out.println(stones);
 					stones--;
 				} else {
 					int stonesInThisPosition = pits.get(position);
 					pits.put(position, stonesInThisPosition + 1);
-					System.out.println("Position: " + position + " " + pits.get(position));
+					stones--;
+					// System.out.println("Position: " + position + " " + pits.get(position));
 					moveHandA("A7", stones, true);
 					return;
 				}
-
 			}
+			checkPosition("B", position);
 		}
-
 	}
 
+	
+	/**
+	 * Check the last position to verify whose is the turn
+	 * @param whoCalls
+	 * @param position
+	 * @return
+	 */
+	public String checkPosition(String whoCalls, String position) {
+		if (whoCalls.equals("A") && position.contains("A")) {
+			return "Player 1";
+		}
+		return "Player 2";
+	}
+
+	/**
+	 *  Verify if is game over
+	 * @return
+	 */
+	public Boolean endGame() {
+		if (pits.get("A2") == 0 && pits.get("A3") == 0 && pits.get("A4") == 0 && pits.get("A5") == 0
+				&& pits.get("A6") == 0 && pits.get("A7") == 0) {
+			return true;
+		} else if (pits.get("B1") == 0 && pits.get("B2") == 0 && pits.get("B3") == 0 && pits.get("B4") == 0
+				&& pits.get("B5") == 0 && pits.get("B6") == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Create the board at the start of the game
+	 * 
+	 * @return
+	 */
 	public String startDrawBoard() {
 		StringBuilder draw = new StringBuilder();
 
@@ -140,6 +186,34 @@ public class GameControll {
 		draw.append("Pits").append("\n");
 		draw.append("B1 - B2 - B3 - B4 - B5 - B6 - B7");
 		draw.append("[6] [6] [6] [6] [6] [6] - (0)").append("\n");
+		draw.append("---------->").append("\n");
+		draw.append("-----------------").append("\n");
+
+		return draw.toString();
+	}
+
+	
+	/**
+	 *  Create the board every time while playing
+	 * @return
+	 */
+	public String drawBoardPlaying() {
+		StringBuilder draw = new StringBuilder();
+
+		draw.append("-----------------").append("\n");
+		draw.append("Player 1").append("\n");
+		draw.append("Pits").append("\n");
+		draw.append("A1 A2 A3 A4 A5 A6 A7").append("\n");
+		draw.append("(").append(pits.get("A1")).append(") [").append(pits.get("A2")).append("] [")
+				.append(pits.get("A3")).append("] [").append(pits.get("A4")).append("] [").append(pits.get("A5"))
+				.append("] [").append(pits.get("A6")).append("] [").append(pits.get("A7")).append("] \n");
+		draw.append("<----------").append("\n");
+		draw.append("Player 2").append("\n");
+		draw.append("Pits").append("\n");
+		draw.append("B1 B2 B3 B4 B5 B6 B7").append("\n");
+		draw.append("[").append(pits.get("B1")).append("] [").append(pits.get("B2")).append("] [")
+				.append(pits.get("B3")).append("] [").append(pits.get("B4")).append("] [").append(pits.get("B5"))
+				.append("] [").append(pits.get("B6")).append("] (").append(pits.get("B7")).append(") \n");
 		draw.append("---------->").append("\n");
 		draw.append("-----------------").append("\n");
 
