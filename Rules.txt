@@ -10,7 +10,7 @@ the game starts with player 1.
 He digits his pit number and press enter (or the button)
 Each stone is increase from previuos pit while stone moved > 0
 if it is the same pit, another turn
-  
+
 
 ------
 

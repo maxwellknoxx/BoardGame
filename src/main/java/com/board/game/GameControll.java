@@ -1,15 +1,21 @@
-package com.board.controller;
+package com.board.game;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GameControll {
 
 	Map<String, Integer> pits = new HashMap<String, Integer>();
 
+	/**
+	 * Initialize the pits
+	 */
 	public void initializePits() {
 		pits.put("A1", 0);
 		pits.put("A2", 6);
@@ -27,28 +33,42 @@ public class GameControll {
 		pits.put("B6", 6);
 		pits.put("B7", 0);
 
-		/*
-		 * System.out.println("--------------------"); System.out.println("Size: " +
-		 * pits.size()); for (String key : pits.keySet()) { Integer value =
-		 * pits.get(key); System.out.println("Key = " + key + ", Value = " + value); }
-		 * System.out.println("--------------------");
-		 */
+		System.out.println("--------------------");
+		System.out.println("Size: " + pits.size());
+		for (String key : pits.keySet()) {
+			Integer value = pits.get(key);
+			System.out.println("Key = " + key + ", Value = " + value);
+		}
+		System.out.println("--------------------");
 
 	}
 
-	public void prepareToMove(String hand, String pit) {
+	/**
+	 * Controll the game
+	 * 
+	 * @param hand
+	 * @param pit
+	 */
+	@PostMapping("/prepareToMove")
+	public void prepareToMove(@RequestParam("hand") String hand) {
+		String[] handAndPit = hand.split(";");
 
-		String position = hand + pit;
-		if (hand.equals("A")) {
-			moveHandA(position, Integer.parseInt(pit), false);
+		String currentHand = handAndPit[0];
+		int pit = Integer.parseInt(handAndPit[1]);
+
+		String position = currentHand + Integer.toString(pit);
+		initializePits();
+		if (currentHand.equals("A")) {
+			moveHandA(position, pit, false);
 		} else {
-			moveHandB(position, Integer.parseInt(pit), false);
+			moveHandB(position, pit, false);
 		}
 
 	}
 
 	/**
 	 * Move the stones through the pits
+	 * 
 	 * @param position
 	 * @param iterator
 	 * @param isCalledByHandB
@@ -62,7 +82,7 @@ public class GameControll {
 				position = "A" + Integer.toString(index);
 				int stonesInThisPosition = pits.get(position);
 				pits.put(position, stonesInThisPosition + 1);
-				// System.out.println("Position: " + position + " " + pits.get(position));
+				System.out.println("Position: " + position + " " + pits.get(position));
 				index--;
 			}
 		} else {
@@ -72,20 +92,23 @@ public class GameControll {
 					if (stones == 0) {
 						stones = pits.get(position);
 						pits.put(position, 0);
-						// System.out.println("Position: " + position + " " + pits.get(position));
+						System.out.println("Position: " + position + " " + pits.get(position));
 					} else {
 						int stonesInThisPosition = pits.get(position);
 						pits.put(position, stonesInThisPosition + 1);
-						// System.out.println("Position: " + position + " " + pits.get(position));
+						System.out.println("Position: " + position + " " + pits.get(position));
 					}
-					// System.out.println(stones);
+					System.out.println(stones);
 					stones--;
 				} else {
-					int stonesInThisPosition = pits.get(position);
-					pits.put(position, stonesInThisPosition + 1);
-					stones--;
-					// System.out.println("Position: " + position + " " + pits.get(position));
-					moveHandB("B1", stones, true);
+					if (stones > 0) {
+						int stonesInThisPosition = pits.get(position);
+						pits.put(position, stonesInThisPosition + 1);
+						stones--;
+						System.out.println("Position: " + position + " " + pits.get(position));
+
+						moveHandB("B1", stones, true);
+					}
 					return;
 				}
 
@@ -96,6 +119,7 @@ public class GameControll {
 
 	/**
 	 * Move the stones through the pits
+	 * 
 	 * @param position
 	 * @param iterator
 	 * @param isCalledByHandA
@@ -108,7 +132,7 @@ public class GameControll {
 				position = "B" + Integer.toString(index);
 				int stonesInThisPosition = pits.get(position);
 				pits.put(position, stonesInThisPosition + 1);
-				// System.out.println("Position: " + position + " " + pits.get(position));
+				System.out.println("Position: " + position + " " + pits.get(position));
 				index++;
 			}
 		} else {
@@ -118,20 +142,22 @@ public class GameControll {
 					if (stones == 0) {
 						stones = pits.get(position);
 						pits.put(position, 0);
-						// System.out.println("Position: " + position + " " + pits.get(position));
+						System.out.println("Position: " + position + " " + pits.get(position));
 					} else {
 						int stonesInThisPosition = pits.get(position);
 						pits.put(position, stonesInThisPosition + 1);
-						// System.out.println("Position: " + position + " " + pits.get(position));
+						System.out.println("Position: " + position + " " + pits.get(position));
 					}
-					// System.out.println(stones);
+					System.out.println(stones);
 					stones--;
 				} else {
-					int stonesInThisPosition = pits.get(position);
-					pits.put(position, stonesInThisPosition + 1);
-					stones--;
-					// System.out.println("Position: " + position + " " + pits.get(position));
-					moveHandA("A7", stones, true);
+					if (stones > 0) {
+						int stonesInThisPosition = pits.get(position);
+						pits.put(position, stonesInThisPosition + 1);
+						stones--;
+						System.out.println("Position: " + position + " " + pits.get(position));
+						moveHandA("A7", stones, true);
+					}
 					return;
 				}
 			}
@@ -139,9 +165,40 @@ public class GameControll {
 		}
 	}
 
-	
+	/**
+	 * Checks if the pit is empty, if yes, captures the opposite stones if not, do
+	 * nothing
+	 * 
+	 * @param hand
+	 * @param pit
+	 * @return
+	 */
+	public String isPitEmpty(String hand, String pit) {
+		String currentPosition = "";
+		String oppositePosition = "";
+		String player = "";
+		if (hand.equals("A")) {
+			currentPosition = "A";
+			oppositePosition = "B";
+			player = "Player 2";
+		} else {
+			currentPosition = "B";
+			oppositePosition = "A";
+			player = "Player 1";
+		}
+		if (pits.get(currentPosition + pit) == 0) {
+			int stonesFromOtherPit = pits.get(oppositePosition + pit);
+			if (stonesFromOtherPit != 0) {
+				pits.put(currentPosition + pit, stonesFromOtherPit);
+			}
+		}
+
+		return player;
+	}
+
 	/**
 	 * Check the last position to verify whose is the turn
+	 * 
 	 * @param whoCalls
 	 * @param position
 	 * @return
@@ -154,7 +211,8 @@ public class GameControll {
 	}
 
 	/**
-	 *  Verify if is game over
+	 * Verify if is game over
+	 * 
 	 * @return
 	 */
 	public Boolean endGame() {
@@ -173,6 +231,7 @@ public class GameControll {
 	 * 
 	 * @return
 	 */
+	@GetMapping("/")
 	public String startDrawBoard() {
 		StringBuilder draw = new StringBuilder();
 
@@ -192,9 +251,9 @@ public class GameControll {
 		return draw.toString();
 	}
 
-	
 	/**
-	 *  Create the board every time while playing
+	 * Create the board every time while playing
+	 * 
 	 * @return
 	 */
 	public String drawBoardPlaying() {

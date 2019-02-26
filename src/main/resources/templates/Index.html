@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet"></link>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Board Game</title>
+</head>
+<body>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>BOARD GAME </strong>
+		</div>
+
+		<div th:if="${message}">
+			<h2 th:text="${message}" />
+		</div>
+
+		<div class="panel-body">
+			<form method="POST" action="/prepareToMove">
+				<input type="text" id="hand"  placeholder="hand" name="hand"> <input
+					type="submit" class="btn btn-primary" value="Play">
+			</form>
+
+			<div th:if="${gameBoard}">
+				<h2 th:text="${gameBoard}" />
+			</div>
+
+
+
+		</div>
+	</div>
+</body>
+</html>
