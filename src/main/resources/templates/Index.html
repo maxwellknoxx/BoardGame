@@ -18,20 +18,25 @@
 			<strong>BOARD GAME </strong>
 		</div>
 
+
+		<div th:if="${rule}">
+			<h2 th:text="${rule}" />
+		</div>
+
 		<div th:if="${message}">
 			<h2 th:text="${message}" />
 		</div>
 
 		<div class="panel-body">
 			<form method="POST" action="/prepareToMove">
-				<input type="text" id="hand"  placeholder="hand" name="hand"> <input
-					type="submit" class="btn btn-primary" value="Play">
+				<input type="text" id="hand"  placeholder="hand" name="hand" required="required" pattern="[A|B];[0-7]" title="It's necessary follow the pattern 'A-B;1-7'">
+				<input type="submit" class="btn btn-primary" value="Play">
 			</form>
 
 			<div th:if="${gameBoard}">
-				<h2 th:text="${gameBoard}" />
+				<p th:text="${gameBoard}" />
 			</div>
-
+			
 
 
 		</div>
