@@ -29,17 +29,21 @@
 
 		<div class="panel-body">
 			<form method="POST" action="/prepareToMove">
-				<input type="text" id="hand"  placeholder="hand" name="hand" required="required" pattern="[A|B];[0-7]" title="It's necessary follow the pattern 'A-B;1-7'">
-				<input type="submit" class="btn btn-primary" value="Play">
+				<input type="text" id="hand" placeholder="hand" name="hand"
+					required="required" pattern="[A|B];[0-7]"
+					title="It's necessary follow the pattern 'A-B;1-7'"> <input
+					type="submit" class="btn btn-primary" value="Play">
 			</form>
 
-			<div th:if="${gameBoard}">
-				<p th:text="${gameBoard}" />
-			</div>
-			
-
+			<form method="POST" action="/restart">
+				<input type="submit" class="btn btn-primary" value="Restart">
+			</form>
 
 		</div>
+
+	</div>
+	<div th:if="${gameBoard}">
+		<p th:text="${gameBoard}" />
 	</div>
 </body>
 </html>

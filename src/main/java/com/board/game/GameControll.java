@@ -69,7 +69,7 @@ public class GameControll {
 			}
 			String playerNoStones = endGame();
 			if (playerNoStones.equals("")) {
-				mv.addObject("message", "Now is the " + player + " turn");
+				mv.addObject("message", "" + player + " turn");
 				mv.addObject("gameBoard", drawBoardPlaying());
 			} else {
 				moveAllStoneToBigPit(playerNoStones);
@@ -78,7 +78,8 @@ public class GameControll {
 			}
 
 		} else {
-			mv.addObject("message", "Invalid Position, Try another one!");
+			mv.addObject("message", player + " Invalid Position, Try another one!");
+			mv.addObject("gameBoard", drawBoardPlaying());
 		}
 
 		return mv;
@@ -106,6 +107,8 @@ public class GameControll {
 				index--;
 			}
 			player = checkPosition("A", position);
+			if (index == 0)
+				index++;
 			isPitEmpty("A", Integer.toString(index));
 		} else {
 			for (int i = iterator; i > 0; i--) {
@@ -172,6 +175,8 @@ public class GameControll {
 				index++;
 			}
 			player = checkPosition("B", position);
+			if (index == 8)
+				index--;
 			isPitEmpty("B", Integer.toString(index));
 		} else {
 			for (int i = iterator; i > 0; i++) {
@@ -240,6 +245,9 @@ public class GameControll {
 			oppositePosition = "A";
 			player = "Player A";
 		}
+
+		System.out.println("isPitEmpty " + hand + pit);
+
 		if (pits.get(currentPosition + pit) == 0) {
 			int stonesFromOtherPit = pits.get(oppositePosition + pit);
 			if (stonesFromOtherPit != 0) {
@@ -349,6 +357,33 @@ public class GameControll {
 		draw.append("-----------------").append("\n");
 
 		mv.addObject("message", "Player 1 starts");
+		mv.addObject("rule", "Hand must be separate by ';' ");
+		mv.addObject("gameBoard", draw.toString());
+
+		return mv;
+	}
+
+	@PostMapping("/restart")
+	public ModelAndView restart() {
+		initializePits();
+		StringBuilder draw = new StringBuilder();
+
+		ModelAndView mv = new ModelAndView("/Index");
+
+		draw.append("-----------------").append("\n");
+		draw.append("Player A").append("\n");
+		draw.append("Pits").append("\n");
+		draw.append("A1 - A2 - A3 - A4 - A5 - A6 - A7");
+		draw.append("(0) - [6] [6] [6] [6] [6] [6]").append("\n");
+		draw.append("<----------").append("\n");
+		draw.append("Player B").append("\n");
+		draw.append("Pits").append("\n");
+		draw.append("B1 - B2 - B3 - B4 - B5 - B6 - B7");
+		draw.append("[6] [6] [6] [6] [6] [6] - (0)").append("\n");
+		draw.append("---------->").append("\n");
+		draw.append("-----------------").append("\n");
+
+		mv.addObject("message", "Game was restarted - Player 1 starts");
 		mv.addObject("rule", "Hand must be separate by ';' ");
 		mv.addObject("gameBoard", draw.toString());
 
