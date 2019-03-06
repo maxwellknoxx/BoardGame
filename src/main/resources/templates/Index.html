@@ -19,19 +19,19 @@
 		</div>
 
 
-		<div th:if="${rule}">
-			<h2 th:text="${rule}" />
+		<div id="Alert">
+			<h2>Hand must be A or B 0-6</h2>
 		</div>
 
 		<div th:if="${message}">
-			<h2 th:text="${message}" />
+			<h2 th:text="${message}"></h2>
 		</div>
 
 		<div class="panel-body">
-			<form method="POST" action="/prepareToMove">
+			<form method="POST" action="/move">
 				<input type="text" id="hand" placeholder="hand" name="hand"
-					required="required" pattern="[A|B];[0-7]"
-					title="It's necessary follow the pattern 'A-B;1-7'"> <input
+					required="required" pattern="[A|B];[0-6]"
+					title="It's necessary follow the pattern 'A-B;0-6'"> <input
 					type="submit" class="btn btn-primary" value="Play">
 			</form>
 
@@ -41,9 +41,32 @@
 
 		</div>
 
-	</div>
-	<div th:if="${gameBoard}">
-		<p th:text="${gameBoard}" />
+		<div id="Player1">
+			<h1><----------</h1>
+			<h1>A0 A1 A2 A3 A4 A5 A6</h1>
+			<div th:if="${player1}">
+				<h1 th:text="${player1}"></h1>
+			</div>
+			<div th:unless="${player1}">
+				<h1>(0) [6] [6] [6] [6] [6] [6]</h1>
+			</div>
+			<h1><----------</h1>
+			<BR />
+		</div>
+
+		<div id="Player2">
+			<h1>----------></h1>
+			<h1>B0 B1 B2 B3 B4 B5 B6</h1>
+			<div th:if="${player2}">
+				<h1 th:text="${player2}"></h1>
+			</div>
+			<div th:unless="${player2}">
+				<h1>[6] [6] [6] [6] [6] [6] (0)</h1>
+			</div>
+			<h1>----------></h1>
+			<BR />
+		</div>
+
 	</div>
 </body>
 </html>
