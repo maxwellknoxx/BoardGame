@@ -18,7 +18,7 @@ Always when the last stone lands in an own empty pit, the player captures his ow
 (the other players' pit) and puts them in his own pit.
 
 
-The Game Ends
+## The Game Ends
 The game is over as soon as one of the sides run out of stones. 
 The player who still has stones in his pits keeps them and puts them in his/hers big pit. 
 Winner of the game is the player who has the most stones in his big pit.
