@@ -26,11 +26,12 @@ public class Controller {
 
 		String hand = auxHandIndex[0];
 		int index = Integer.parseInt(auxHandIndex[1]);
-		
+
 		p = boardGame.move(hand, index);
 
-		if (boardGame.isGameOver()) {
-			mv.addObject("message", "Player " + p.getHandName() + " is the winner");
+		if (boardGame.isEndGame()) {
+			if (boardGame.isGameOver())
+				mv.addObject("message", boardGame.getWinner() + " is the winner");
 		}
 
 		mv.addObject("player1", drawBoardPlayingA());
@@ -63,7 +64,7 @@ public class Controller {
 		boardGame.initialize();
 		return mv;
 	}
-	
+
 	/**
 	 * Create the board every time while playing
 	 * 

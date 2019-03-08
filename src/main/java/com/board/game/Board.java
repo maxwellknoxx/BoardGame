@@ -93,7 +93,8 @@ public class Board {
 	}
 
 	/**
-	 *  Returns the object Player and set him as playing
+	 * Returns the object Player and set him as playing
+	 * 
 	 * @param player Which player is required
 	 * @return Object Player
 	 */
@@ -109,7 +110,8 @@ public class Board {
 	}
 
 	/**
-	 *  Updates the information in object Player
+	 * Updates the information in object Player
+	 * 
 	 * @param hand Required hand
 	 * @return Object Player
 	 */
@@ -121,7 +123,8 @@ public class Board {
 	}
 
 	/**
-	 *  Gets the Player from the opposite hand and set him as playing
+	 * Gets the Player from the opposite hand and set him as playing
+	 * 
 	 * @param player Required player
 	 * @return Object Player
 	 */
@@ -137,8 +140,9 @@ public class Board {
 	}
 
 	/**
-	 *  Gets the Player from the opposite hand
-	 * @param player Required Player
+	 * Gets the Player from the opposite hand
+	 * 
+	 * @param player Current hand
 	 * @return Object Player
 	 */
 	public Player getOppositePlayer(String player) {
@@ -149,34 +153,36 @@ public class Board {
 	}
 
 	/**
-	 *  Checks who is the winner
+	 * Checks who is the winner
+	 * 
 	 * @return The winner
 	 */
 	public String getWinner() {
-		if (isGameOver()) {
-			if (player1.isWinner()) {
-				return "Player 1";
-			} else if (player2.isWinner()) {
-				return "Player 2";
-			}
+		if (player1.isWinner()) {
+			return "Player 1";
+		} else if (player2.isWinner()) {
+			return "Player 2";
 		}
 		return "";
 	}
 
-	/**
-	 *  Checks whether is game over
-	 * @return True or False
-	 */
-	public boolean isGameOver() {
-		if (service.isGameOver(player1, player2)) {
-			return true;
-		}
-		return false;
+	public boolean isEndGame() {
+		return service.isEndGame(player1, player2);
 	}
 
 	/**
-	 *  Moves the stones among the pits
-	 * @param hand Current hand
+	 * Checks whether is game over
+	 * 
+	 * @return True or False
+	 */
+	public boolean isGameOver() {
+		return service.isGameOver(player1, player2);
+	}
+
+	/**
+	 * Moves the stones among the pits
+	 * 
+	 * @param hand  Current hand
 	 * @param index Current index
 	 * @return Next Player
 	 */
@@ -190,9 +196,10 @@ public class Board {
 	}
 
 	/**
-	 *  Checks who is the next player
-	 * @param hand Current hand
-	 * @param index Current index
+	 * Checks who is the next player
+	 * 
+	 * @param hand   Current hand
+	 * @param index  Current index
 	 * @param player Current player
 	 * @return Next Player
 	 */

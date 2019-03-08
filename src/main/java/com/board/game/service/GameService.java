@@ -8,9 +8,10 @@ public class GameService {
 	private Log log = new Log();
 
 	/**
-	 *  Checks whether the player is still in the same pit
-	 * @param hand Current hand
-	 * @param index Current index
+	 * Checks whether the player is still in the same pit
+	 * 
+	 * @param hand   Current hand
+	 * @param index  Current index
 	 * @param player Who is playing
 	 * @return True or False
 	 */
@@ -22,10 +23,11 @@ public class GameService {
 	}
 
 	/**
-	 *  Checks whether the pit is empty and collect opposite stones 
+	 * Checks whether the pit is empty and collect opposite stones
+	 * 
 	 * @param player1 Player 1
 	 * @param player2 Player 2
-	 * @param index Current index
+	 * @param index   Current index
 	 * @throws Exception
 	 */
 	public void isPitEmpty(Player player1, Player player2, int index) throws Exception {
@@ -41,10 +43,11 @@ public class GameService {
 	}
 
 	/**
-	 *  Collects the stones from the opposite side
+	 * Collects the stones from the opposite side
+	 * 
 	 * @param player1 Player 1
 	 * @param player2 Player 2
-	 * @param index Current index
+	 * @param index   Current index
 	 * @throws Exception
 	 */
 	public void collectOppositeStones(Player player1, Player player2, int index) throws Exception {
@@ -64,9 +67,9 @@ public class GameService {
 	 * 
 	 * @param p1 Player 1
 	 * @param p2 Player 2
-	 * @return True or False 
+	 * @return True or False
 	 */
-	private boolean isEndGame(Player p1, Player p2) {
+	public boolean isEndGame(Player p1, Player p2) {
 		if (p1.getHand().get(1).getStones() == 0 && p1.getHand().get(2).getStones() == 0
 				&& p1.getHand().get(3).getStones() == 0 && p1.getHand().get(4).getStones() == 0
 				&& p1.getHand().get(5).getStones() == 0 && p1.getHand().get(6).getStones() == 0) {
@@ -89,20 +92,20 @@ public class GameService {
 	 * @return
 	 */
 	public boolean isGameOver(Player p1, Player p2) {
-		if (isEndGame(p1, p2)) {
-			if (p1.isNoStones()) {
-				collectStonesToBigPit(p2);
-			} else {
-				collectStonesToBigPit(p1);
-			}
-			if (p1.getHand().get(0).getStones() > p2.getHand().get(7).getStones()) {
-				p1.setWinner(true);
-			} else {
-				p2.setWinner(true);
-			}
-			return true;
+		boolean isGameOver = false;
+		if (p1.isNoStones()) {
+			collectStonesToBigPit(p2);
+		} else {
+			collectStonesToBigPit(p1);
 		}
-		return false;
+		if (p1.getHand().get(0).getStones() > p2.getHand().get(6).getStones()) {
+			p1.setWinner(true);
+			isGameOver = true;
+		} else {
+			p2.setWinner(true);
+			isGameOver = true;
+		}
+		return isGameOver;
 	}
 
 	/**
@@ -126,9 +129,10 @@ public class GameService {
 	}
 
 	/**
-	 *  Moves the stones among the pits
+	 * Moves the stones among the pits
+	 * 
 	 * @param player Who is playing
-	 * @param index Which pit has been chosen
+	 * @param index  Which pit has been chosen
 	 * @return Number of stones left
 	 */
 	public int move(Player player, int index) {
@@ -136,7 +140,7 @@ public class GameService {
 		int indexStop = player.getBigPit();
 
 		stones = player.getHand().get(index).collectAllStones();
-		
+
 		index = verifyIndex(index);
 		while (stones > 0) {
 			player.getHand().get(index).addStone();
@@ -157,7 +161,8 @@ public class GameService {
 	}
 
 	/**
-	 *  Moves the stones to the pits from the other side when there are stones left
+	 * Moves the stones to the pits from the other side when there are stones left
+	 * 
 	 * @param player Who is playing
 	 * @param stones Quantity of stones left
 	 */
@@ -175,8 +180,9 @@ public class GameService {
 	}
 
 	/**
-	 *  Decides which is the next index according with who is playing
-	 * @param p Who is playing
+	 * Decides which is the next index according with who is playing
+	 * 
+	 * @param p     Who is playing
 	 * @param index Index at the moment
 	 * @return Correct index
 	 */
@@ -190,7 +196,8 @@ public class GameService {
 	}
 
 	/**
-	 *  Verifies if the index is correct to avoid Null Pointer
+	 * Verifies if the index is correct to avoid Null Pointer
+	 * 
 	 * @param index Current index
 	 * @return The properly index
 	 */
